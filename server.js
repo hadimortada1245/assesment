@@ -4,14 +4,25 @@ const cors = require('cors');
 const Connectionf=require('./config/config');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
+const session = require('express-session');
+const passport = require('passport');
+const passConfig=require('./utils/passport');
 const app = express();
 
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+}));
 
-app.use('/auth',authRoutes);
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/auth', require('./routes/auth'));
 app.use('/admin',adminRoutes);
 
 
