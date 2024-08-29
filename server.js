@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const Connectionf=require('./config/config');
 const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
 const app = express();
 
 
@@ -11,6 +12,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth',authRoutes);
+app.use('/admin',adminRoutes);
 
 
 try {

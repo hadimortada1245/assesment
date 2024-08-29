@@ -67,7 +67,7 @@ const login = async (req, res) => {
     if(!user.emailVerified)
         return res.status(401).json({ message: 'Email verification is required!' });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id ,role:user.role}, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({success:true, token });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -75,14 +75,6 @@ const login = async (req, res) => {
 };
 
 
-const resetPassword = async (req, res) => {
-  
-};
-
-
-const forgetPassword = async (req, res) => {
- 
-};
 
 
 const verifyEmail = async (req, res) => {
@@ -104,4 +96,4 @@ const verifyEmail = async (req, res) => {
   };
 
 
-module.exports={ register, login, resetPassword, forgetPassword, verifyEmail };
+module.exports={ register, login, verifyEmail };
