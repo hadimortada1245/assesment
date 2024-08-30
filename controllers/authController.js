@@ -46,7 +46,7 @@ const register = async (req, res) => {
         html: `<p>Click <a href="${verificationLink}">here</a> to verify your email address.</p>`
       });
 
-    res.status(201).json({ message: 'User registered successfully' ,verificationLink});
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
