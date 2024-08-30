@@ -25,7 +25,13 @@ app.use(passport.session());
 app.use('/auth', require('./routes/auth'));
 app.use('/admin',adminRoutes);
 
+app.get('/', (req, res) => {
+  res.send('Home Page');
+});
 
+app.get('/login', (req, res) => {
+  res.send('Login Page');
+});
 try {
   app.listen(process.env.PORT, () => {
     console.log(`Server is running on port: ${process.env.PORT}`);

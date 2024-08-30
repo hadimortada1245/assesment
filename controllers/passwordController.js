@@ -11,7 +11,7 @@ const requestPasswordReset=async(req,res) =>{
             return res.status(400).json({ message: 'User not found' });
         
         const otp = crypto.randomBytes(3).toString('hex'); 
-        user.resetToken = otp;
+        user.resetToken = await bcrypt.hash(otp, 10);
         user.resetTokenExpiry = Date.now() + 3600000; 
         await user.save();
         const transporter = nodemailer.createTransport({
@@ -39,14 +39,14 @@ const resetPassword = async (req, res) => {
     try {
         const user = await User.findOne({
             email,
-            resetToken: otp,
             resetTokenExpiry: { $gt: Date.now() },
         });
-
         if (!user) {
             return res.status(400).json({ message: 'Invalid or expired OTP' });
         }
-
+        const checkOtp=await bcrypt.compare(otp,user.resetToken);
+        if(!checkOtp)
+            return res.status(400).json({ message: 'Invalid  OTP' });
         user.password = await bcrypt.hash(newPassword, 10);
         user.resetToken = undefined;
         user.resetTokenExpiry = undefined;
